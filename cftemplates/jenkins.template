@@ -20,7 +20,7 @@
             "yum -y install git\n",
             "git clone https://github.com/jstroehmann/chef-jenkins.git\n",
             "curl -sSL https://www.chef.io/chef/install.sh | bash\n",
-            "chef-solo -c chef-jenkins/configs/solo.rb -o recipe[test]\n"
+            "chef-solo -c chef-jenkins/configs/solo.rb -o recipe[jenkins]\n"
           ]]}
         }
       }
