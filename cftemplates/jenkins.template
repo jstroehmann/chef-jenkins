@@ -1,0 +1,39 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Jenkins cloudformation setup",
+
+  "Resources" : {
+    "jenkins1": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "Tags": [ { "Key" : "Name", "Value": "jenkins1" } ],
+        "ImageId" : "ami-1ecae776",
+        "InstanceType"   : "t2.micro",
+        "SecurityGroupIds" : [ "sg-8ba1a5ee", "sg-a0caaac4" ],
+        "SubnetId"       : "subnet-d99631ae",
+        "KeyName"        : "jaymz",
+        "UserData" : {"Fn::Base64" : {"Fn::Join" : ["", [
+            "#!/bin/bash\n",
+            "# install chef\n",
+            "yum -y update\n",
+            "curl -sSL https://www.chef.io/chef/install.sh | bash\n",
+            "git clone git@github.com:jstroehmann/chef-jenkins\n",
+            "chef-solo -c chef-jenkins/configs/solo.rb -o recipe[test]\n"
+          ]]}
+        }
+      }
+    }
+  },
+  "Outputs" : {
+    "URL" : {
+      "Description" : "The URL of your jenkins website",
+      "Value" :  { "Fn::Join" : [ "", [ "http://", { "Fn::GetAtt" : [ "jenkins1", "PublicIp" ]}, ":8080" ]]}
+    },
+    "SSH" : {
+      "Description" : "ssh to your jenkins instance",
+      "Value" :  { "Fn::Join" : [ "", [ "ssh -i ~/.ssh/jaymz.pem -l ec2-user ", { "Fn::GetAtt" : [ "jenkins1", "PublicIp" ]}]]}
+    }
+  }
+
+}
