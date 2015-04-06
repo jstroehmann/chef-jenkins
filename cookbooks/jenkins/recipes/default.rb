@@ -10,18 +10,24 @@ execute 'install_jenkins_key' do
   command 'rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key'
 end
 
-packages = ['jenkins', 'java', 'git']
 
-packages.each packages do
+package ['jenkins', 'git'] do
   action :install
 end
 
 service 'jenkins' do
-  action [:enable :start]
+  action [:enable, :start]
+end
+
+directory '/opt/packer' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
 end
 
 remote_file '/opt/packer/packer_0.7.5_linux_amd64.zip' do
-	  source 'https://dl.bintray.com/mitchellh/packer/packer_0.7.5_linux_amd64.zip -o /opt/packer/packer_0.7.5_linux_amd64.zip'
+  source 'https://dl.bintray.com/mitchellh/packer/packer_0.7.5_linux_amd64.zip'
 end
 
 execute 'install_packer' do
