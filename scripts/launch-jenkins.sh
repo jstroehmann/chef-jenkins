@@ -1,1 +1,1 @@
-aws cloudformation create-stack --stack-name "jenkins" --template-url "https://s3.amazonaws.com/cf-templates-1bpde8xxropa1-us-east-1/jenkins.template" --tags '[{"Key":"cf","Value":"true"},{"Key":"app","Value":"jenkins"}]'
+aws --profile jstroehmann cloudformation create-stack --stack-name "jenkins" --template-url "https://s3.amazonaws.com/cf-templates-1bpde8xxropa1-us-east-1/jenkins.template" --tags '[{"Key":"cf","Value":"true"},{"Key":"app","Value":"jenkins"}]'
